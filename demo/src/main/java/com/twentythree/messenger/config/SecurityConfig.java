@@ -87,17 +87,34 @@ public class SecurityConfig {
     }
 
     // Конфигурация CORS, чтобы разрешить запросы с фронтенда (например, с другого порта)
+// Конфигурация CORS, чтобы разрешить запросы с фронтенда
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:8081")); // Укажите URL вашего фронтенда
+        // Указываем разрешенные来源 (origins)
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",        // Для локальной разработки фронтенда (если порт такой)
+                "http://localhost:3001",        // Другой возможный порт для локальной разработки
+                "https://archinka207.github.io" // <--- ВАШЕ ИСПРАВЛЕНИЕ: Добавьте URL вашего GitHub Pages
+        ));
+        // Разрешаем все стандартные методы
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "X-Requested-With", "Accept"));
-        configuration.setAllowCredentials(true); // Разрешить отправку cookies и заголовков авторизации
-        configuration.setMaxAge(3600L); // Время кеширования pre-flight запроса
+        // Разрешаем все стандартные заголовки, включая Authorization для JWT
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Cache-Control",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin" // Origin важен для CORS
+        ));
+        // Разрешаем отправку credentials (например, cookies, заголовки авторизации)
+        configuration.setAllowCredentials(true);
+        // Время кеширования pre-flight запроса (OPTIONS) браузером
+        configuration.setMaxAge(3600L); // 1 час
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Применяем конфигурацию ко всем путям
+        source.registerCorsConfiguration("/**", configuration); // Применяем эту конфигурацию ко всем путям ("/api/**" и "/ws/**")
         return source;
     }
 }
