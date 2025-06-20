@@ -91,11 +91,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Указываем разрешенные来源 (origins)
+        // Указываем разрешенные (origins)
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:3000",        // Для локальной разработки фронтенда (если порт такой)
                 "http://localhost:3001",        // Другой возможный порт для локальной разработки
-                "https://archinka207.github.io" // <--- ВАШЕ ИСПРАВЛЕНИЕ: Добавьте URL вашего GitHub Pages
+                "https://courteous-adventure-production.up.railway.app" // <--- ВАШЕ ИСПРАВЛЕНИЕ: Добавьте URL вашего GitHub Pages
         ));
         // Разрешаем все стандартные методы
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
